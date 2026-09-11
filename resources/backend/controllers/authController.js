@@ -73,6 +73,15 @@ const setCookie = (res, accessToken, refreshToken) => {
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 };
+
+const serializeUser = (user) => {
+  const serialized = user.toJSON ? user.toJSON() : user.toObject();
+  if (serialized.role) {
+    serialized.role = String(serialized.role).trim().toLowerCase();
+  }
+  return serialized;
+};
+
 export const signup = async (req, res) => {
   try {
     const { email, password, confirmPassword, fullName, role } = req.body;
@@ -108,7 +117,7 @@ export const signup = async (req, res) => {
     setCookie(res, access_token, refresh_token);
     res.status(201).json({
       message: "User registered successfully",
-      user: newUser.toJSON(),
+      user: serializeUser(newUser),
       access_token,
       refresh_token,
     });
@@ -140,7 +149,7 @@ export const login = async (req, res) => {
     setCookie(res, access_token, refresh_token);
     res.status(200).json({
       message: "Login successful",
-      user: user.toJSON ? user.toJSON() : user,
+      user: serializeUser(user),
       access_token,
       refresh_token,
     });
@@ -212,7 +221,7 @@ export const getProfile = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json(user.toJSON ? user.toJSON() : user);
+    res.status(200).json(serializeUser(user));
   } catch (error) {
     console.error("Error fetching profile:", error.message);
 
@@ -264,7 +273,7 @@ export const updateProfile = async (req, res) => {
 
     res.status(200).json({
       message: "Profile updated successfully",
-      user: user.toJSON ? user.toJSON() : user,
+      user: serializeUser(user),
     });
   } catch (error) {
     console.error("Error updating profile:", error);
