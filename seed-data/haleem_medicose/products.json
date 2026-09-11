@@ -1,0 +1,544 @@
+[{
+  "_id": {
+    "$oid": "68f4d28152fb57ca1d7896f0"
+  },
+  "name": "Paracetemol 500mg",
+  "description": "- Composition: Paracetamol IP 500 mg\n- Dosage: As directed by the Physician\n- Storage Instructions: Store in a cool and dry place.",
+  "price": 8.15,
+  "category": "PainKiller",
+  "stock": 8,
+  "isFeatured": false,
+  "createdAt": {
+    "$date": "2025-10-19T11:58:57.782Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-14T18:07:29.081Z"
+  },
+  "__v": 0,
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1760875137/products/pmwkhk1cveru4ubfhwoz.jpg",
+      "public_id": "legacy/pmwkhk1cveru4ubfhwoz",
+      "altText": "",
+      "isPrimary": true
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "68f4e743b074dd1eb34e2810"
+  },
+  "name": "Combiflam - 400 mg",
+  "description": "Strip of 20 Tablets\nComposition: Each uncoated tablet contains: Ibuprofen IP 400mg, Paracetamol IP 325, Excipients q.s.",
+  "price": 38,
+  "category": "PainKiller",
+  "stock": 5,
+  "isFeatured": true,
+  "createdAt": {
+    "$date": "2025-10-19T13:27:31.257Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-17T09:19:04.077Z"
+  },
+  "__v": 0,
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1760880451/products/w3sdgjrk1s4aea5ctepp.jpg",
+      "public_id": "legacy/w3sdgjrk1s4aea5ctepp",
+      "altText": "",
+      "isPrimary": true
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "68f4e9a543be9e0135a28b8e"
+  },
+  "name": "Montair LC Kid Syrup",
+  "description": "SALT COMPOSITION\nLevocetirizine (2.5mg/5ml) + Montelukast (4mg/5ml)",
+  "price": 143,
+  "category": "Cough Syrup",
+  "stock": 1,
+  "isFeatured": true,
+  "createdAt": {
+    "$date": "2025-10-19T13:37:41.516Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-17T02:56:44.557Z"
+  },
+  "__v": 0,
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1760881061/products/znexs7qfakmtkw3i0szt.avif",
+      "public_id": "legacy/znexs7qfakmtkw3i0szt",
+      "altText": "",
+      "isPrimary": true
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "68f5ab679069179cabc6e1e0"
+  },
+  "name": "Cofsils Naturals Cough Syrup",
+  "description": "Cough Syrup helps relieve cough, sore throat, and cold symptoms using natural ingredients",
+  "price": 140,
+  "category": "Cough Syrup",
+  "stock": 2,
+  "isFeatured": false,
+  "createdAt": {
+    "$date": "2025-10-20T03:24:23.427Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-17T02:56:44.656Z"
+  },
+  "__v": 0,
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1760930663/products/dfoxywbka0qtismyw68v.webp",
+      "public_id": "legacy/dfoxywbka0qtismyw68v",
+      "altText": "",
+      "isPrimary": true
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "68f5abb49069179cabc6e1e2"
+  },
+  "name": "Baidyanath Kasamrit Herbal Cough Syrup",
+  "description": "Baidyanath Kasamrit Herbal Cough Syrup is made from a special mix of herbs and spices like Vasa, Pippali, Shunthi, Tulasi, Yashtimadhu, and Bibhitaki.",
+  "price": 110,
+  "category": "Cough Syrup",
+  "stock": 4,
+  "isFeatured": false,
+  "createdAt": {
+    "$date": "2025-10-20T03:25:40.802Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-14T18:10:07.114Z"
+  },
+  "__v": 0,
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1760930741/products/j5ksjfzf1gwiqjthooym.jpg",
+      "public_id": "legacy/j5ksjfzf1gwiqjthooym",
+      "altText": "",
+      "isPrimary": true
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "69038d4372eefed48dee22ad"
+  },
+  "name": "Metpure-AM 5 ",
+  "description": "Metpure-AM 5 Tablet MR contains two medicines, both of which help to control high blood pressure and heart rate. It is also used for heart-related chest pain (angina), abnormal heart rhythms and chronic (long-term) heart failure.",
+  "price": 211,
+  "category": "Blood Pressure Medicines",
+  "stock": 5,
+  "isFeatured": false,
+  "createdAt": {
+    "$date": "2025-10-30T16:07:31.011Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-14T14:43:39.540Z"
+  },
+  "__v": 0,
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1761840450/products/tbg2svuglujyzirrk2t6.avif",
+      "public_id": "legacy/tbg2svuglujyzirrk2t6",
+      "altText": "",
+      "isPrimary": true
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "690460e93277bde43bdf7480"
+  },
+  "name": "Metalor-XR 25",
+  "description": "Metoprolol Succinate (23.75mg)\nMetoLAR XR 25 Capsule belongs to a group of medicines called beta-blockers. It is used to treat high blood pressure (hypertension), angina ",
+  "price": 76.7,
+  "category": "Blood Pressure Medicines",
+  "stock": 7,
+  "isFeatured": false,
+  "createdAt": {
+    "$date": "2025-10-31T07:10:33.393Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-10T10:46:48.966Z"
+  },
+  "__v": 0,
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1761894632/products/mhnraqreltglhcjgf82s.avif",
+      "public_id": "legacy/mhnraqreltglhcjgf82s",
+      "altText": "",
+      "isPrimary": true
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "690461313277bde43bdf7482"
+  },
+  "name": "Crocin",
+  "description": "Paracetamol (500mg)",
+  "price": 18.9,
+  "category": "PainKiller",
+  "stock": 10,
+  "isFeatured": true,
+  "createdAt": {
+    "$date": "2025-10-31T07:11:45.981Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-13T18:16:36.029Z"
+  },
+  "__v": 0,
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1761894705/products/djxggqjsaj8l5yqkuful.avif",
+      "public_id": "legacy/djxggqjsaj8l5yqkuful",
+      "altText": "",
+      "isPrimary": true
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "690461ae3277bde43bdf7484"
+  },
+  "name": "HUMINsulin 30/70 Cartridge",
+  "description": "HUMINsulin 30/70 Cartridge (3ml Each) is a combination of two medicines, an intermediate-acting and a short-acting type of insulin. It is used in the treatment of diabetes mellitus (type 1 and 2) to improve blood sugar control both in adults and children. I",
+  "price": 476,
+  "category": "Diabetes Medicines",
+  "stock": 9,
+  "isFeatured": false,
+  "createdAt": {
+    "$date": "2025-10-31T07:13:50.699Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-15T03:18:27.194Z"
+  },
+  "__v": 0,
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1761894830/products/wodxm2nmyiwlok9kzwvj.avif",
+      "public_id": "legacy/wodxm2nmyiwlok9kzwvj",
+      "altText": "",
+      "isPrimary": true
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "693d8c974ab85331e3692d81"
+  },
+  "name": "Amoxycillin & Potassium Clavulanate I.P. Tablets 500MG ",
+  "description": "FORLIC-CV-625 Tablet is a penicillin type of antibiotic composed of Amoxycillin and Potassium Clavulanate that helps our body fight infections caused by bacteria.",
+  "price": 135,
+  "category": "Antibiotics",
+  "stock": 8,
+  "isFeatured": false,
+  "createdAt": {
+    "$date": "2025-12-13T15:56:07.708Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-14T18:07:29.558Z"
+  },
+  "__v": 0,
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1765641367/products/x6vqeesxeq64smepjbdm.jpg",
+      "public_id": "legacy/x6vqeesxeq64smepjbdm",
+      "altText": "",
+      "isPrimary": true
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "693d8d0f4ab85331e3692d83"
+  },
+  "name": "Azithromycin 500mg",
+  "description": "Azithromycin is used in the treatment of bacterial infections. It is used in bacterial infections of tonsils, sinus, ear, nose, throat, skin and soft tissues and lungs (pneumonia).",
+  "price": 75,
+  "category": "Antibiotics",
+  "stock": 9,
+  "isFeatured": false,
+  "createdAt": {
+    "$date": "2025-12-13T15:58:07.983Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-14T18:07:29.203Z"
+  },
+  "__v": 0,
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1765641487/products/wsdlovj9wdlw1qxxmrtm.jpg",
+      "public_id": "legacy/wsdlovj9wdlw1qxxmrtm",
+      "altText": "",
+      "isPrimary": true
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "693d9265b9baa7900aadf6bd"
+  },
+  "name": "Wellbeing Nutrition Melts Into Vitamin D3 + K2 ",
+  "description": "Helps improve immunity\nPromotes bone health\nUplifts mood and provides energy\nSupports heart health",
+  "price": 599,
+  "category": "Health Supplements",
+  "stock": 8,
+  "isFeatured": false,
+  "createdAt": {
+    "$date": "2025-12-13T16:20:53.499Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-14T15:59:41.142Z"
+  },
+  "__v": 0,
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1765642853/products/wbhfbxwnc0usk3di9leq.webp",
+      "public_id": "legacy/wbhfbxwnc0usk3di9leq",
+      "altText": "",
+      "isPrimary": true
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "69402578c6b097ad35fdc6e3"
+  },
+  "name": "Montair-LC ",
+  "description": "Tablet is a combination medicine used in the treatment of allergic symptoms such as runny nose, stuffy nose, sneezing, itching, swelling, watery eyes, and congestion or stuffiness. ",
+  "price": 408,
+  "category": "Antihistamines",
+  "stock": 10,
+  "isFeatured": false,
+  "createdAt": {
+    "$date": "2025-12-15T15:12:56.759Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-15T15:12:56.759Z"
+  },
+  "__v": 0,
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1765811575/products/lt5k64bruromvjcoxt4p.avif",
+      "public_id": "legacy/lt5k64bruromvjcoxt4p",
+      "altText": "",
+      "isPrimary": true
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "694025c2c6b097ad35fdc6e5"
+  },
+  "name": "Allegra 120mg Tablet",
+  "description": "Allegra 120mg Tablet is an anti-allergy medicine used in the treatment of allergic symptoms such as runny nose, congestion or stuffiness, sneezing, itching, swelling, and watery eyes",
+  "price": 265,
+  "category": "Antihistamines",
+  "stock": 8,
+  "isFeatured": false,
+  "createdAt": {
+    "$date": "2025-12-15T15:14:10.244Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-15T15:14:10.244Z"
+  },
+  "__v": 0,
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1765811647/products/f3a2yizwnxzw2mv3javd.avif",
+      "public_id": "legacy/f3a2yizwnxzw2mv3javd",
+      "altText": "",
+      "isPrimary": true
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "6940e101b6a1dce893ea3bc2"
+  },
+  "name": "Oflomac 200 Tablet",
+  "description": "Oflomac 200 Tablet is an antibiotic that helps treat bacterial infections. It is used in treating infections of the urinary tract, nose, throat, skin and soft tissues, and lungs (pneumonia)",
+  "price": 89.5,
+  "category": "Antibiotics",
+  "stock": 9,
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1765859582/products/reg7oj0i3gfd3onmccgk.avif",
+      "public_id": "products/reg7oj0i3gfd3onmccgk",
+      "altText": "",
+      "isPrimary": true,
+      "_id": {
+        "$oid": "6940e101b6a1dce893ea3bc3"
+      }
+    },
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1765859582/products/ikeltbbj1lwwfgmzk17z.avif",
+      "public_id": "products/ikeltbbj1lwwfgmzk17z",
+      "altText": "",
+      "isPrimary": false,
+      "_id": {
+        "$oid": "6940e101b6a1dce893ea3bc4"
+      }
+    },
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1765859583/products/fcdznyfriv1wvohn1nqi.avif",
+      "public_id": "products/fcdznyfriv1wvohn1nqi",
+      "altText": "",
+      "isPrimary": false,
+      "_id": {
+        "$oid": "6940e101b6a1dce893ea3bc5"
+      }
+    },
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1765859584/products/uyeecxs74zkyorvrwawr.avif",
+      "public_id": "products/uyeecxs74zkyorvrwawr",
+      "altText": "",
+      "isPrimary": false,
+      "_id": {
+        "$oid": "6940e101b6a1dce893ea3bc6"
+      }
+    }
+  ],
+  "isFeatured": false,
+  "createdAt": {
+    "$date": "2025-12-16T04:33:05.053Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-17T02:56:44.461Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6941954697911db0a9b37fe3"
+  },
+  "name": "Dabur HoneyTus",
+  "description": "Dabur Honitus is India's No.1 Ayurvedic Cough Syrup. It is Clinically Tested for Fast & Effective Relief from Cough & Sore Throat in just 15 minutes. Its 100% Ayurvedic non-drowsy formula is made up of ingredients like Honey, Tulsi, Mulethi, Shunthi & Bana",
+  "price": 171,
+  "category": "Cough Syrup",
+  "stock": 9,
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1765905732/products/jucnh7lr9wwprzvic2zd.webp",
+      "public_id": "products/jucnh7lr9wwprzvic2zd",
+      "altText": "",
+      "isPrimary": true,
+      "_id": {
+        "$oid": "6941954697911db0a9b37fe4"
+      }
+    },
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1765905733/products/ffkw1ezdkjg0zfcmpky8.webp",
+      "public_id": "products/ffkw1ezdkjg0zfcmpky8",
+      "altText": "",
+      "isPrimary": false,
+      "_id": {
+        "$oid": "6941954697911db0a9b37fe5"
+      }
+    },
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1765905734/products/mkcxrdumtcsw1ehlmop7.webp",
+      "public_id": "products/mkcxrdumtcsw1ehlmop7",
+      "altText": "",
+      "isPrimary": false,
+      "_id": {
+        "$oid": "6941954697911db0a9b37fe6"
+      }
+    }
+  ],
+  "isFeatured": false,
+  "createdAt": {
+    "$date": "2025-12-16T17:22:14.876Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-25T06:13:28.094Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a57aa38200c49b424d68016"
+  },
+  "name": "Mirago 50",
+  "description": "Mirago 50 Tablet ER helps to treat uncontrollable contractions (spasms) of the bladder muscles that cause frequent urination, urgent need to urinate, and inability to control the passing of urine",
+  "price": 345,
+  "category": "Antihistamines",
+  "stock": 5,
+  "image": "https://res.cloudinary.com/djeeq4arz/image/upload/v1784130104/products/osodqacpk34tgiiknuv9.avif",
+  "isFeatured": false,
+  "createdAt": {
+    "$date": "2026-07-15T15:41:44.298Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-15T15:41:44.298Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a59ffb18d6d4aad97130941"
+  },
+  "name": "Mega-cv",
+  "description": "antibiotic",
+  "price": 70,
+  "category": "Antibiotics",
+  "stock": 5,
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1784283057/products/rylk9mhagxlmrzgqdfaw.jpg",
+      "public_id": "products/rylk9mhagxlmrzgqdfaw",
+      "altText": "",
+      "isPrimary": true,
+      "_id": {
+        "$oid": "6a59ffb18d6d4aad97130942"
+      }
+    }
+  ],
+  "isFeatured": false,
+  "createdAt": {
+    "$date": "2026-07-17T10:10:57.864Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-17T10:10:57.864Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a59ffea8d6d4aad97130944"
+  },
+  "name": "Mega-CVV-375",
+  "description": "Antibiotic with clauvionate",
+  "price": 126,
+  "category": "Antibiotics",
+  "stock": 9,
+  "images": [
+    {
+      "url": "https://res.cloudinary.com/djeeq4arz/image/upload/v1784283114/products/du2qmhld0mlhlwefi2zu.jpg",
+      "public_id": "products/du2qmhld0mlhlwefi2zu",
+      "altText": "",
+      "isPrimary": true,
+      "_id": {
+        "$oid": "6a59ffea8d6d4aad97130945"
+      }
+    }
+  ],
+  "isFeatured": false,
+  "createdAt": {
+    "$date": "2026-07-17T10:11:54.623Z"
+  },
+  "updatedAt": {
+    "$date": "2026-07-25T02:54:21.541Z"
+  },
+  "__v": 0
+}]

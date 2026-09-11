@@ -1,0 +1,211 @@
+import Order from "../models/Order.js";
+import User from "../models/User.js";
+import Product from "../models/Product.js";
+import { generateInvoice } from "../lib/invoiceGenerator.js"; // to be created
+
+// GET /api/orders?status=processing&page=1&limit=10
+export const listUserOrders = async (req, res) => {
+  try {
+    const userId = req.user?._id;
+    const { status, page = 1, limit = 10 } = req.query;
+
+    const filter = { user: userId };
+    if (status) filter.status = status;
+
+    const skip = (page - 1) * limit;
+    const [orders, total] = await Promise.all([
+      Order.find(filter)
+        .populate("orderItems.product", "name price")
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(Number(limit)),
+      Order.countDocuments(filter),
+    ]);
+
+    return res.json({
+      success: true,
+      orders,
+      pagination: {
+        page: Number(page),
+        totalPages: Math.ceil(total / limit),
+        totalItems: total,
+      },
+    });
+  } catch (err) {
+    console.error("listUserOrders error:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+// GET /api/orders/:id
+export const getOrderById = async (req, res) => {
+  try {
+    const userId = req.user?._id;
+    const order = await Order.findOne({ _id: req.params.id, user: userId })
+      .populate("orderItems.product", "fullName price description")
+      .lean();
+
+    if (!order)
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found" });
+
+    return res.json({ success: true, order });
+  } catch (err) {
+    console.error("getOrderById error:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+// GET /api/orders/:id/invoice
+export const downloadInvoice = async (req, res) => {
+  try {
+    const userId = req.user?._id;
+    const order = await Order.findOne({ _id: req.params.id, user: userId })
+      .populate("orderItems.product", "_id name price ,razorpayOrderId")
+      .populate("user", "fullName email")
+      .lean();
+
+    if (!order) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found" });
+    }
+
+    const pdfBuffer = await generateInvoice(order);
+
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": `attachment; filename="Invoice_${order.razorpayOrderId}.pdf"`,
+    });
+
+    res.send(pdfBuffer);
+  } catch (err) {
+    console.error("downloadInvoice error:", err);
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to generate invoice" });
+  }
+};
+
+export const getAllOrders = async (req, res) => {
+  try {
+    const { page = 1, status } = req.query;
+    const limit = 10;
+    const query = status ? { status } : {};
+    const total = await Order.countDocuments(query);
+    const orders = await Order.find(query)
+      .populate("user", "fullName email")
+      .sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+
+    res.json({
+      success: true,
+      orders,
+      pagination: {
+        total,
+        totalPages: Math.ceil(total / limit),
+        page: Number(page),
+      },
+    });
+  } catch (err) {
+    console.error("getAllOrders error:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+export const downloadInvoiceAdmin = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id)
+      .populate("user", "fullName email")
+      .populate("orderItems.product", "name price");
+
+    if (!order) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found" });
+    }
+
+    // Reuse your existing invoice generator (no req/res inside it)
+    const pdfBuffer = await generateInvoice(order);
+
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": `attachment; filename="Invoice_${order._id}.pdf"`,
+    });
+
+    res.send(pdfBuffer);
+  } catch (err) {
+    console.error("downloadInvoiceAdmin error:", err);
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to generate invoice" });
+  }
+};
+
+export const updateOrderStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const validStatuses = ["processing", "delivered", "cancelled"];
+
+    if (!validStatuses.includes(status)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid status" });
+    }
+
+    // Get the current order to check previous status
+    const currentOrder = await Order.findById(id);
+    if (!currentOrder)
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found" });
+
+    const previousStatus = currentOrder.status;
+
+    // Update the order status
+    const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
+    if (!order)
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found" });
+
+    // If status changed to cancelled and wasn't cancelled before, restore stock
+    if (status === "cancelled" && previousStatus !== "cancelled") {
+      console.log(
+        `[ORDER_CANCELLED] Restoring stock for cancelled order ${order._id}`
+      );
+
+      for (const item of order.orderItems) {
+        try {
+          const product = await Product.findById(item.product);
+          if (!product) {
+            console.error(
+              `[STOCK_RESTORE] Product ${item.product} not found for order ${order._id}`
+            );
+            continue;
+          }
+
+          const oldStock = product.stock;
+          product.stock += item.quantity; // Add back the quantity
+          await product.save();
+
+          console.log(
+            `[STOCK_RESTORE] ${product.name}: stock increased from ${oldStock} to ${product.stock} (Order: ${order._id})`
+          );
+        } catch (error) {
+          console.error(
+            `[STOCK_RESTORE] Failed to restore stock for product ${item.product} in order ${order._id}:`,
+            error
+          );
+        }
+      }
+    }
+
+    res.json({ success: true, order });
+  } catch (err) {
+    console.error("updateOrderStatus error:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};

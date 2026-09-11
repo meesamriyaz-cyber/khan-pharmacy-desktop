@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Khan Pharmacy</title>
+
+<style>
+body{
+    margin:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background:#ffff;
+    color: #0C4570;
+    font-family:Segoe UI,Arial,sans-serif;
+    overflow:hidden;
+}
+
+.container{
+    text-align:center;
+}
+
+.logo{
+    font-size:72px;
+}
+
+.title{
+    margin-top:15px;
+    font-size:30px;
+    font-weight:bold;
+}
+
+.subtitle{
+    margin-top:15px;
+    font-size:15px;
+    opacity:.85;
+}
+
+.loader{
+    margin:30px auto 0;
+    width:50px;
+    height:50px;
+    border:5px solid rgba(255,255,255,.3);
+    border-top:5px solid white;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo">
+    <img src="build/icon.ico" alt="Khan Pharmacy Logo" width="100" height="100">
+</div>
+
+<div class="title">
+Khan Pharmacy
+</div>
+
+<div class="subtitle">
+Starting Application...
+</div>
+
+<div class="loader"></div>
+
+</div>
+
+</body>
+</html>

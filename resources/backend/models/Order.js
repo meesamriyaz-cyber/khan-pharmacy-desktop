@@ -1,0 +1,54 @@
+import mongoose from "mongoose";
+
+const orderSchema = new mongoose.Schema(
+  {
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+
+    orderItems: [
+      {
+        product: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
+        quantity: { type: Number, required: true, min: 1 },
+        price: { type: Number, required: true, min: 0 }
+      }
+    ],
+
+    totalAmount: { type: Number, required: true, min: 0 },
+
+    // Razorpay details
+    razorpayOrderId: { type: String, required: true },
+    razorpayPaymentId: { type: String, required: true }, // required after success
+    razorpaySignature: { type: String, required: true }, // for verification
+
+    paymentStatus: {
+      type: String,
+      enum: ["pending", "paid", "failed", "cancelled"],
+      default: "pending"
+    },
+
+    status: {
+      type: String,
+      enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
+      default: "pending"
+    },
+
+    currency: { type: String, default: "INR" },
+
+    shippingAddress: {
+      street: String,
+      city: String,
+      state: String,
+      zipCode: String,
+      country: { type: String, default: "India" }
+    },
+
+    couponApplied: {
+      code: String,
+      discountPercentage: Number,
+      discountAmount: Number
+    }
+  },
+  { timestamps: true }
+);
+
+const Order = mongoose.model("Order", orderSchema);
+export default Order;

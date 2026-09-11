@@ -1,0 +1,112 @@
+[{
+  "_id": {
+    "$oid": "693d8b387fee0b9ffbd06350"
+  },
+  "name": "Vaccines",
+  "description": "",
+  "createdAt": {
+    "$date": "2025-12-13T15:50:16.270Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-13T15:50:16.270Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "693d8b387fee0b9ffbd06356"
+  },
+  "name": "Antihistamines",
+  "description": "",
+  "createdAt": {
+    "$date": "2025-12-13T15:50:16.470Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-13T15:50:16.470Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "693d8b387fee0b9ffbd06359"
+  },
+  "name": "Antibiotics",
+  "description": "",
+  "createdAt": {
+    "$date": "2025-12-13T15:50:16.569Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-13T15:50:16.569Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "693d8b387fee0b9ffbd0635c"
+  },
+  "name": "Blood Pressure Medicines",
+  "description": "",
+  "createdAt": {
+    "$date": "2025-12-13T15:50:16.665Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-13T15:50:16.665Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "693d8b387fee0b9ffbd0635f"
+  },
+  "name": "Cough Syrup",
+  "description": "",
+  "createdAt": {
+    "$date": "2025-12-13T15:50:16.762Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-13T15:50:16.762Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "693d8b387fee0b9ffbd06362"
+  },
+  "name": "PainKiller",
+  "description": "",
+  "createdAt": {
+    "$date": "2025-12-13T15:50:16.857Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-13T15:50:16.857Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "693d8b397fee0b9ffbd06365"
+  },
+  "name": "Diabetes Medicines",
+  "description": "",
+  "createdAt": {
+    "$date": "2025-12-13T15:50:17.017Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-13T15:50:17.017Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "693d916cb9baa7900aadf6ab"
+  },
+  "name": "Health Supplements",
+  "description": "",
+  "createdAt": {
+    "$date": "2025-12-13T16:16:44.646Z"
+  },
+  "updatedAt": {
+    "$date": "2025-12-13T16:16:44.646Z"
+  },
+  "__v": 0
+}]

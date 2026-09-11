@@ -1,0 +1,85 @@
+{
+  "name": "khan-pharmacy-desktop",
+  "version": "1.0.0",
+  "description": "Pharmacy shop",
+  "license": "ISC",
+  "author": "Cutting Edge Enterprises",
+  "type": "module",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "prepare": "node scripts/build.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "release": "npm run prepare && npm run dist"
+  },
+  "build": {
+    "appId": "com.cuttingedge.khanpharmacy",
+    "productName": "Khan Pharmacy",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "splash.html",
+      "build/icon.ico",
+      "utils/**/*",
+      "services/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "resources",
+        "to": "resources",
+        "filter": [
+          "**/*",
+          "!mongodb/**/*.pdb"
+        ]
+      },
+      {
+        "from": "seed-data",
+        "to": "seed-data",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "asarUnpack": [
+      "resources/backend/**/*"
+    ],
+    "win": {
+      "signExecutable": false,
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "deleteAppDataOnUninstall": false,
+      "perMachine": true
+    }
+  },
+  "devDependencies": {
+    "electron": "^43.2.0",
+    "electron-builder": "^26.15.3",
+    "png-to-ico": "^3.0.2"
+  },
+  "dependencies": {
+    "electron-store": "^11.0.2",
+    "fs-extra": "^11.4.0",
+    "tree-kill": "^1.2.2",
+    "wait-on": "^9.1.0"
+  }
+}
