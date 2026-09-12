@@ -14,7 +14,7 @@ import { createOrder } from "../lib/orderService.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-dotenv.config({ path: path.resolve(__dirname, "../.env.local") });
+dotenv.config({ path: path.resolve(__dirname, "../.env.local"), quiet: true });
 
 // ✅ Create Razorpay Order
 export const createCheckoutSession = async (req, res) => {
@@ -28,7 +28,7 @@ export const createCheckoutSession = async (req, res) => {
     }
 
     const options = {
-      amount: Math.round(totalAmount), // <= paise, integer
+      amount: Math.round(totalAmount * 100), // convert rupees to paise for Razorpay
       currency: "INR",
       receipt: `receipt_order_${Date.now()}`,
       payment_capture: 1,
@@ -39,6 +39,22 @@ export const createCheckoutSession = async (req, res) => {
     };
 
     const order = await instance.orders.create(options);
+
+    const userId = req.user && req.user._id;
+    await PendingPayment.findOneAndUpdate(
+      { razorpayOrderId: order.id },
+      {
+        user: userId || null,
+        razorpayOrderId: order.id,
+        cartSnapshot: cartItems || [],
+        totalAmount,
+        couponApplied: couponCode ? { code: couponCode } : null,
+        status: "pending",
+        expiresAt: new Date(Date.now() + 1000 * 60 * 60), // 1 hour TTL
+      },
+      { upsert: true, new: true }
+    );
+
     res.status(200).json({ success: true, order });
   } catch (error) {
     console.error("Error creating checkout session:", error);
@@ -82,6 +98,8 @@ export const verifyPayment = async (req, res) => {
       totalAmount,
       couponApplied,
       shippingAddress,
+      customerName,
+      customerPhone,
     } = req.body;
 
     if (!payment_id || !order_id || !signature) {
@@ -198,35 +216,30 @@ export const verifyPayment = async (req, res) => {
       razorpayPaymentId: payment_id,
       razorpaySignature: signature,
       shippingAddress: finalShipping,
+      customerName: customerName || "",
+      customerPhone: customerPhone || "",
       couponApplied: couponApplied || null,
       paymentStatus: "paid",
       status: "processing",
     });
 
-    // Update stock for each ordered item
+    // Update stock for each ordered item (atomic $inc — no race condition)
     for (const item of normalizedItems) {
       try {
-        const product = await Product.findById(item.product);
-        if (!product) {
-          console.error(
-            `[STOCK_UPDATE] Product ${item.product} not found for order ${order._id}`
-          );
-          continue;
-        }
-
-        if (product.stock < item.quantity) {
-          console.warn(
-            `[STOCK_UPDATE] Insufficient stock for ${product.name}: requested ${item.quantity}, available ${product.stock} (Order: ${order._id})`
-          );
-        }
-
-        const oldStock = product.stock;
-        product.stock = Math.max(0, product.stock - item.quantity);
-        await product.save();
-
-        console.log(
-          `[STOCK_UPDATE] ${product.name}: stock decreased from ${oldStock} to ${product.stock} (Order: ${order._id})`
+        const updated = await Product.findOneAndUpdate(
+          { _id: item.product, stock: { $gte: item.quantity } },
+          { $inc: { stock: -item.quantity } },
+          { new: true, select: "name stock" }
         );
+        if (!updated) {
+          const product = await Product.findById(item.product).select("name stock");
+          if (!product) {
+            console.error(
+              `[STOCK_UPDATE] Product ${item.product} not found for order ${order._id}`
+            );
+          }
+        } else {
+        }
       } catch (error) {
         console.error(
           `[STOCK_UPDATE] Failed to update stock for product ${item.product} in order ${order._id}:`,
@@ -277,3 +290,5 @@ async function createNewCoupon(userId) {
 
   return newCoupon;
 }
+
+

@@ -85,9 +85,8 @@ function createWindow() {
   
 
   });
-      win.webContents.openDevTools({
-    mode: "detach"
-  });
+  win.webContents.openDevTools();
+  
   win.webContents.setWindowOpenHandler(({ url }) => {
   shell.openExternal(url);
   return { action: "deny" };

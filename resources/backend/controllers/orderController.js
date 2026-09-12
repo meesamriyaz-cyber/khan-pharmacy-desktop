@@ -15,6 +15,7 @@ export const listUserOrders = async (req, res) => {
     const skip = (page - 1) * limit;
     const [orders, total] = await Promise.all([
       Order.find(filter)
+        .populate("user", "fullName email")
         .populate("orderItems.product", "name price")
         .sort({ createdAt: -1 })
         .skip(skip)
@@ -42,6 +43,7 @@ export const getOrderById = async (req, res) => {
   try {
     const userId = req.user?._id;
     const order = await Order.findOne({ _id: req.params.id, user: userId })
+      .populate("user", "fullName email")
       .populate("orderItems.product", "fullName price description")
       .lean();
 
@@ -71,6 +73,8 @@ export const downloadInvoice = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Order not found" });
     }
+
+    console.error("[INVOICE_DEBUG] downloadInvoice orderId:", req.params.id, "couponApplied type:", typeof order.couponApplied, "couponApplied:", JSON.stringify(order.couponApplied));
 
     const pdfBuffer = await generateInvoice(order);
 
@@ -126,7 +130,8 @@ export const downloadInvoiceAdmin = async (req, res) => {
         .json({ success: false, message: "Order not found" });
     }
 
-    // Reuse your existing invoice generator (no req/res inside it)
+    console.error("[INVOICE_DEBUG] downloadInvoiceAdmin orderId:", req.params.id, "couponApplied type:", typeof order.couponApplied, "couponApplied:", JSON.stringify(order.couponApplied));
+
     const pdfBuffer = await generateInvoice(order);
 
     res.set({
@@ -146,8 +151,8 @@ export const downloadInvoiceAdmin = async (req, res) => {
 export const updateOrderStatus = async (req, res) => {
   try {
     const { id } = req.params;
-    const { status } = req.body;
-    const validStatuses = ["processing", "delivered", "cancelled"];
+    const { status, paymentMethod, deliveryDetails } = req.body;
+    const validStatuses = ["pending", "confirmed", "processing", "packed", "shipped", "out_for_delivery", "delivered", "completed", "cancelled", "returned"];
 
     if (!validStatuses.includes(status)) {
       return res
@@ -155,7 +160,6 @@ export const updateOrderStatus = async (req, res) => {
         .json({ success: false, message: "Invalid status" });
     }
 
-    // Get the current order to check previous status
     const currentOrder = await Order.findById(id);
     if (!currentOrder)
       return res
@@ -164,36 +168,29 @@ export const updateOrderStatus = async (req, res) => {
 
     const previousStatus = currentOrder.status;
 
-    // Update the order status
-    const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
+    const updateData = { status };
+    if (paymentMethod) updateData.paymentMethod = paymentMethod;
+    if (deliveryDetails) updateData.deliveryDetails = { ...currentOrder.deliveryDetails, ...deliveryDetails };
+
+    const order = await Order.findByIdAndUpdate(id, updateData, { new: true });
     if (!order)
       return res
         .status(404)
         .json({ success: false, message: "Order not found" });
 
-    // If status changed to cancelled and wasn't cancelled before, restore stock
     if (status === "cancelled" && previousStatus !== "cancelled") {
-      console.log(
-        `[ORDER_CANCELLED] Restoring stock for cancelled order ${order._id}`
-      );
-
       for (const item of order.orderItems) {
         try {
-          const product = await Product.findById(item.product);
-          if (!product) {
+          const updated = await Product.findByIdAndUpdate(
+            item.product,
+            { $inc: { stock: item.quantity } },
+            { new: true, select: "name stock" }
+          );
+          if (!updated) {
             console.error(
               `[STOCK_RESTORE] Product ${item.product} not found for order ${order._id}`
             );
-            continue;
           }
-
-          const oldStock = product.stock;
-          product.stock += item.quantity; // Add back the quantity
-          await product.save();
-
-          console.log(
-            `[STOCK_RESTORE] ${product.name}: stock increased from ${oldStock} to ${product.stock} (Order: ${order._id})`
-          );
         } catch (error) {
           console.error(
             `[STOCK_RESTORE] Failed to restore stock for product ${item.product} in order ${order._id}:`,
@@ -201,6 +198,12 @@ export const updateOrderStatus = async (req, res) => {
           );
         }
       }
+    }
+
+    if (status === "delivered" && previousStatus !== "delivered") {
+      order.deliveryDetails = order.deliveryDetails || {};
+      order.deliveryDetails.actualDelivery = new Date();
+      await order.save();
     }
 
     res.json({ success: true, order });
