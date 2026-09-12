@@ -23,7 +23,7 @@
     },
     "files": [
       "main.js",
-      "preload.js",
+      "preload.cjs",
       "splash.html",
       "build/icon.ico",
       "utils/**/*",
