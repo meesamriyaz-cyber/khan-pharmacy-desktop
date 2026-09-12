@@ -26,7 +26,7 @@ export async function startBackend() {
       __dirname,
       "..",
       "..",
-      "haleem-medicose-backend"
+      "Medicose-backend"
     );
   }
 

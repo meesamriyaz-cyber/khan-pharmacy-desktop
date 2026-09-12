@@ -11,13 +11,13 @@ const electronRoot = path.resolve(__dirname, "..");
 const frontendRoot = path.resolve(
   electronRoot,
   "..",
-  "haleem-medicose-frontend"
+  "Medicose-frontend"
 );
 
 const backendRoot = path.resolve(
   electronRoot,
   "..",
-  "haleem-medicose-backend"
+  "Medicose-backend"
 );
 
 const mongoRoot = path.resolve(

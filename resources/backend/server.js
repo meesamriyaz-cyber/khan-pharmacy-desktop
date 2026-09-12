@@ -17,6 +17,9 @@ import analyticsRoutes from "./routes/analyticsRoute.js";
 import contactRoutes from "./routes/contactRoutes.js";
 import prescriptionRoutes from "./routes/prescriptionRoute.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
+import saleRoutes from "./routes/saleRoutes.js";
+import alertRoutes from "./routes/alertRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -27,7 +30,7 @@ const __dirname = dirname(__filename);
 import connectDB from "./config/db.js";
 import corsOptions from "./config/corsOptions.js";
 
-dotenv.config({ path: path.resolve(__dirname, "./.env.local") });
+dotenv.config({ path: path.resolve(__dirname, "./.env.local"), quiet: true });
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -35,10 +38,6 @@ const FORCE_HTTPS = process.env.FORCE_HTTPS === "true";
 const NODE_ENV = process.env.NODE_ENV || "development";
 
 const shouldLogMobileTraffic = process.env.LOG_MOBILE_TRAFFIC === "true";
-app.use((req, res, next) => {
-  console.log(`[req] ${req.method} ${req.url} origin=${req.headers.origin}`);
-  next();
-});
 connectDB();
 
 // Drop old index if exists
@@ -49,51 +48,18 @@ mongoose.connection.once("open", async () => {
     const hasUserIDIndex = indexes.some((idx) => idx.name === "userID_1");
     if (hasUserIDIndex) {
       await collection.dropIndex("userID_1");
-      console.log("Dropped old userID_1 index");
     }
   } catch (error) {
-    console.log("Error dropping index:", error.message);
+    console.error("Error dropping index:", error.message);
   }
 });
 
-app.use((req, res, next) => {
-  console.log(
-    `[${NODE_ENV}] ${req.method} ${req.url} origin=${
-      req.headers.origin || "none"
-    }`
-  );
-  next();
-});
 app.use(cors(corsOptions));
 
 app.use(cookieParser());
 
 if (shouldLogMobileTraffic) {
   app.use((req, res, next) => {
-    const origin = req.get("origin") || "null";
-    const host = req.get("host") || "unknown";
-    const ua = req.get("user-agent") || "unknown";
-    const start = Date.now();
-
-    console.info("[mobile-debug][req]", {
-      method: req.method,
-      url: req.originalUrl,
-      origin,
-      host,
-      ip: req.ip,
-      cookies: Object.keys(req.cookies || {}),
-      ua,
-    });
-
-    res.on("finish", () => {
-      console.info("[mobile-debug][res]", {
-        method: req.method,
-        url: req.originalUrl,
-        status: res.statusCode,
-        durationMs: Date.now() - start,
-      });
-    });
-
     next();
   });
 }
@@ -105,7 +71,7 @@ app.use(
   })
 );
 
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+// Add request timeout middleware for mobile devices
 app.use((req, res, next) => {
   // Set timeout based on request type - much longer for products with images
   const isProductRequest = req.path.startsWith("/api/products");
@@ -124,11 +90,6 @@ app.use((req, res, next) => {
   }
 
   res.setTimeout(timeout, () => {
-    console.warn(
-      `Request timeout for ${req.method} ${req.path} - Device: ${
-        isMobile ? "Mobile" : "Desktop"
-      }, Timeout: ${timeout}ms`
-    );
     res.status(408).json({
       error: "Request Timeout",
       message: `Request took too long to process${
@@ -154,8 +115,11 @@ app.use("/api/analytics", analyticsRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/prescriptions", prescriptionRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/sales", saleRoutes);
+app.use("/api/alerts", alertRoutes);
+app.use("/api/admin/users", userRoutes);
 
-/* Serve static files from frontend build
+// Serve static files from frontend build
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
 // Handle React routing, return all requests to React app (except API routes)
@@ -165,12 +129,7 @@ app.use((req, res, next) => {
   }
   res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
 });
-*/
-const DATABASE_PATH = process.env.DATABASE_PATH;
-const UPLOADS_PATH = process.env.UPLOADS_PATH;
-const BACKUPS_PATH = process.env.BACKUPS_PATH;
-const LOGS_PATH = process.env.LOGS_PATH;
-const CONFIG_PATH = process.env.CONFIG_PATH;
+
 if (NODE_ENV === "development" && FORCE_HTTPS === "true") {
   const sslOptions = {
     key: fs.readFileSync(path.join(__dirname, "localhost-key.pem")),
@@ -178,11 +137,8 @@ if (NODE_ENV === "development" && FORCE_HTTPS === "true") {
   };
 
   https.createServer(sslOptions, app).listen(PORT, "0.0.0.0", () => {
-    console.log(`✅ Local HTTPS server running on https://localhost:${PORT}`);
   });
 } else {
   app.listen(PORT, "0.0.0.0", () => {
-    console.log(`✅ Server running on http://0.0.0.0:${PORT}`);
-    console.log(`✅ Environment: ${NODE_ENV}`);
   });
 }

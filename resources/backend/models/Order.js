@@ -14,38 +14,55 @@ const orderSchema = new mongoose.Schema(
 
     totalAmount: { type: Number, required: true, min: 0 },
 
-    // Razorpay details
-    razorpayOrderId: { type: String, required: true },
-    razorpayPaymentId: { type: String, required: true }, // required after success
-    razorpaySignature: { type: String, required: true }, // for verification
+    // Razorpay details (optional - local/direct orders won't have these)
+    razorpayOrderId: { type: String },
+    razorpayPaymentId: { type: String },
+    razorpaySignature: { type: String },
 
     paymentStatus: {
       type: String,
-      enum: ["pending", "paid", "failed", "cancelled"],
+      enum: ["pending", "paid", "failed", "cancelled", "refunded"],
       default: "pending"
+    },
+
+    paymentMethod: {
+      type: String,
+      enum: ["cash", "card", "upi", "online", "wallet"],
+      default: "cash"
     },
 
     status: {
       type: String,
-      enum: ["pending", "processing", "shipped", "delivered", "cancelled"],
+      enum: [
+        "pending",
+        "confirmed",
+        "processing",
+        "packed",
+        "shipped",
+        "out_for_delivery",
+        "delivered",
+        "completed",
+        "cancelled",
+        "returned"
+      ],
       default: "pending"
     },
 
-    currency: { type: String, default: "INR" },
-
-    shippingAddress: {
-      street: String,
-      city: String,
-      state: String,
-      zipCode: String,
-      country: { type: String, default: "India" }
+    deliveryDetails: {
+      estimatedDelivery: { type: Date },
+      actualDelivery: { type: Date },
+      deliveryPartner: { type: String },
+      trackingNumber: { type: String }
     },
 
     couponApplied: {
       code: String,
       discountPercentage: Number,
       discountAmount: Number
-    }
+    },
+
+    customerName: { type: String },
+    customerPhone: { type: String }
   },
   { timestamps: true }
 );

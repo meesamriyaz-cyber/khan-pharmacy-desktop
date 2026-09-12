@@ -13,7 +13,6 @@ export const generateInvoice = async (order) => {
   const pdfDoc = await PDFDocument.create();
   pdfDoc.registerFontkit(fontkit);
 
-  // ✅ Load fonts that support ₹ symbol
   const fontPath = path.join(
     __dirname,
     "../assets/fonts/Roboto/static/Roboto-Regular.ttf"
@@ -29,18 +28,16 @@ export const generateInvoice = async (order) => {
   const customFont = await pdfDoc.embedFont(fontBytes);
   const boldFont = await pdfDoc.embedFont(fontBoldBytes);
 
-  // ✅ Embed logo
-  const logoPath = path.join(__dirname, "../assets/haleemmedicose_logo.png");
+  const logoPath = path.join(__dirname, "../assets/khan_medicines_logo.png");
   const logoBuffer = fs.readFileSync(logoPath);
   const logoImage = await pdfDoc.embedPng(logoBuffer);
 
-  const page = pdfDoc.addPage([600, 820]);
+  const page = pdfDoc.addPage([620, 920]);
   const { height } = page.getSize();
 
-  const margin = 40;
+  const margin = 30;
   let y = height - margin;
 
-  // === HEADER ===
   const logoDims = logoImage.scale(0.18);
   page.drawImage(logoImage, {
     x: margin,
@@ -48,21 +45,21 @@ export const generateInvoice = async (order) => {
     width: logoDims.width,
     height: logoDims.height,
   });
-  page.drawText("Haleem Medicose", {
+  page.drawText("Khan Medicines (Chemist and Druggist)", {
     x: 200,
     y: y - 30,
-    size: 22,
+    size: 20,
     font: boldFont,
     color: rgb(0, 0.45, 0.2),
   });
-  page.drawText("GSTIN: 07ABCDE1234F1Z5", {
+  page.drawText("GSTIN: ", {
     x: 200,
     y: y - 50,
     size: 10,
     font: boldFont,
     color: rgb(0.2, 0.2, 0.2),
   });
-  page.drawText("Contact: +91 9876543210 | Email: support@haleemmedicose.com", {
+  page.drawText("Contact: +91 7006590688 | Email: hamidkhan.pharmacy@gmail.com", {
     x: 200,
     y: y - 65,
     size: 9,
@@ -78,7 +75,6 @@ export const generateInvoice = async (order) => {
   });
   y -= 20;
 
-  // === INVOICE INFO ===
   page.drawText(`Invoice #: ${order._id}`, {
     x: margin,
     y,
@@ -86,7 +82,7 @@ export const generateInvoice = async (order) => {
     weight: "bold",
     font: boldFont,
   });
-  page.drawText(`Order #: ${order.razorpayOrderId}`, {
+  page.drawText(`Order #: ${order.razorpayOrderId || order._id}`, {
     x: 400,
     y,
     size: 12,
@@ -110,26 +106,33 @@ export const generateInvoice = async (order) => {
     });
   }
   y -= 20;
-  page.drawText(`Customer: ${order.user?.fullName || "Guest"}`, {
-    x: margin,
-    y,
-    size: 12,
-    font: boldFont,
-  });
-  y -= 15;
-  page.drawText(`Email: ${order.user?.email || "-"}`, {
-    x: margin,
-    y,
-    size: 11,
-    font: customFont,
-  });
-  y -= 15;
-  page.drawText(
-    `Shipping Address: ${order.shippingAddress?.addressLine1 || ""}, ${
-      order.shippingAddress?.city || ""
-    } ${order.shippingAddress?.pincode || ""}`,
-    { x: margin, y, size: 11, font: customFont }
-  );
+  if (order.customerName && order.customerName.trim()) {
+    y -= 15;
+    page.drawText(
+      `Customer: ${order.customerName}`,
+      { x: margin, y, size: 11, font: customFont }
+    );
+  }
+  if (order.customerPhone) {
+    y -= 15;
+    page.drawText(`Phone: ${order.customerPhone}`, {
+      x: margin,
+      y,
+      size: 11,
+      font: customFont,
+    });
+  }
+
+  const isOnlineOrder = !!order.razorpayOrderId || !!order.razorpayPaymentId;
+  if (!isOnlineOrder) {
+    y -= 15;
+    page.drawText(`Salesperson: ${order.user?.fullName || "-"}`, {
+      x: margin,
+      y,
+      size: 11,
+      font: customFont,
+    });
+  }
 
   y -= 30;
   page.drawLine({
@@ -140,9 +143,8 @@ export const generateInvoice = async (order) => {
   });
   y -= 25;
 
-  // === TABLE HEADER ===
-  const headers = ["#", "Item", "Qty", "Price", "GST", "Total"];
-  const colWidths = [20, 230, 50, 70, 60, 80];
+  const headers = ["#", "Item", "Qty", "Price", "Total"];
+  const colWidths = [20, 280, 50, 80, 90];
   let x = margin;
 
   page.drawRectangle({
@@ -168,20 +170,15 @@ export const generateInvoice = async (order) => {
 
   y -= 25;
 
-  // === TABLE ROWS ===
   let index = 1;
   let subtotal = 0;
-  let gstTotal = 0;
 
   for (const item of order.orderItems || []) {
     const name = item.product?.name || "Unknown Item";
     const qty = item.quantity || 1;
     const price = item.price || 0;
-    const gstRate = 0.18; // 12% GST assumed
-    const gst = price * gstRate * qty;
-    const total = qty * price + gst;
+    const total = qty * price;
     subtotal += qty * price;
-    gstTotal += gst;
 
     x = margin;
     page.drawText(String(index++), { x, y, size: 10, font: customFont });
@@ -192,8 +189,6 @@ export const generateInvoice = async (order) => {
     x += colWidths[2];
     page.drawText(`₹${price.toFixed(2)}`, { x, y, size: 10, font: customFont });
     x += colWidths[3];
-    page.drawText(`₹${gst.toFixed(2)}`, { x, y, size: 10, font: customFont });
-    x += colWidths[4];
     page.drawText(`₹${total.toFixed(2)}`, { x, y, size: 10, font: customFont });
     y -= 18;
   }
@@ -207,15 +202,13 @@ export const generateInvoice = async (order) => {
   });
   y -= 25;
 
-  // === TOTALS SECTION ===
-  const subtotalWithGst = subtotal + gstTotal;
   let discount = 0;
   if (order.couponApplied && order.couponApplied.discountPercentage) {
-    discount = subtotalWithGst * (order.couponApplied.discountPercentage / 100);
+    discount = subtotal * (order.couponApplied.discountPercentage / 100);
   }
-  const grandTotal = subtotalWithGst - discount;
+  console.error("[INVOICE_DEBUG] orderId:", order._id, "subtotal:", subtotal, "discountPercentage:", order.couponApplied?.discountPercentage, "discount:", discount, "grandTotal:", subtotal - discount);
+  const grandTotal = subtotal - discount;
 
-  // Draw subtotal
   page.drawText(`Subtotal: ₹${subtotal.toFixed(2)}`, {
     x: 400,
     y,
@@ -224,21 +217,10 @@ export const generateInvoice = async (order) => {
   });
   y -= 15;
 
-  // Draw GST
-  page.drawText(`GST (18%): ₹${gstTotal.toFixed(2)}`, {
-    x: 400,
-    y,
-    size: 11,
-    font: customFont,
-  });
-  y -= 15;
-
-  // Draw discount if applicable
   if (discount > 0) {
+    console.error("[INVOICE_DEBUG] Drawing discount line:", order.couponApplied.discountPercentage + "%", "-₹" + discount.toFixed(2));
     page.drawText(
-      `Discount (${
-        order.couponApplied.discountPercentage
-      }%): -₹${discount.toFixed(2)}`,
+      `Discount (${order.couponApplied.discountPercentage}%): -₹${discount.toFixed(2)}`,
       {
         x: 400,
         y,
@@ -248,9 +230,10 @@ export const generateInvoice = async (order) => {
       }
     );
     y -= 15;
+  } else {
+    console.error("[INVOICE_DEBUG] No discount drawn. discount:", discount, "couponApplied:", JSON.stringify(order.couponApplied));
   }
 
-  // Always draw grand total with consistent spacing
   page.drawText(`Grand Total: ₹${grandTotal.toFixed(2)}`, {
     x: 400,
     y,
@@ -267,9 +250,8 @@ export const generateInvoice = async (order) => {
     color: rgb(0.5, 0.5, 0.5),
   });
 
-  // === FOOTER ===
   y -= 40;
-  page.drawText("For Haleem Medicose,", {
+  page.drawText("Khan Medicines (Chemist & Druggist)", {
     x: 40,
     y,
     size: 10,
@@ -293,7 +275,7 @@ export const generateInvoice = async (order) => {
     color: rgb(0, 0.4, 0.2),
   });
   y -= 15;
-  page.drawText("Visit again at www.haleemmedicose.com", {
+  page.drawText("Visit again at khanmedicines.in", {
     x: 220,
     y,
     size: 10,
